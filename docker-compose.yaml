@@ -1,7 +1,7 @@
 ---
 services:
   headergrade:
-    container_name: headergrade  
+    container_name: headergrade
     image: wydler/headergrade:${IMAGE_TAG:-latest}
     restart: unless-stopped
     ports:

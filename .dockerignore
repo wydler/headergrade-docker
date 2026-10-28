@@ -1,0 +1,22 @@
+# Git metadata and local checkout state
+.git
+.gitmodules
+**/.git
+
+# Dependencies and generated/local data
+**/node_modules
+data
+.env
+.env.*
+!.env.example
+
+
+# CI and project files not needed in the image
+.github
+.gitignore
+README.md
+LICENSE
+compose.yaml
+docker-compose.yaml
+renovate.json5
+tests

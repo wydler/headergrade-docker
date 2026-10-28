@@ -1,0 +1,23 @@
+---
+services:
+  headergrade:
+    container_name: headergrade  
+    image: wydler/headergrade:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${HOST_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      SEED_TOKEN: ${SEED_TOKEN:-}
+      ZAP_API_URL: ${ZAP_API_URL:-}
+      ZAP_API_KEY: ${ZAP_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

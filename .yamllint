@@ -10,4 +10,4 @@ yaml-files:
 rules:
   empty-lines:
     level: warning
-  line-length: Disable
+  line-length: disable

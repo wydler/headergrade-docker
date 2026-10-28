@@ -2,6 +2,7 @@
 name: "Tools - Validate Dockerfile Schema"
 
 "on":
+  workflow_dispatch:  
   pull_request:
     branches:
       - "master"

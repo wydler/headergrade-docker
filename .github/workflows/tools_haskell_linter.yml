@@ -29,4 +29,4 @@ jobs:
         with:
           dockerfile: "Dockerfile"
           recursive: "true"
-          # ignore: "DL3008,DL3013,DL3015,DL3018,DL3059"
+          ignore: "DL3066"

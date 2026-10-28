@@ -15,7 +15,7 @@ permissions:
 jobs:
   validate-dockerfile-schema:
     name: Haskell Linter
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Override with --build-arg NODE_IMAGE=node:22-alpine@sha256:<digest> to pin the base image.
-ARG NODE_IMAGE=22.23.4-alpine3.24@sha256:sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
+ARG NODE_IMAGE=node:22.23.4-alpine3.24@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
 FROM ${NODE_IMAGE}
 
 LABEL org.opencontainers.image.title="HeaderGrade Docker"

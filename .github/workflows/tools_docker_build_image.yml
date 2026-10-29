@@ -39,9 +39,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: false
           platforms: ${{ env.REGISTRY_PLATFORMS }}
           tags: headergrade-docker:test
+          load: true
 
       - name: Run smoke test
         run: |

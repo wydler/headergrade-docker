@@ -16,8 +16,8 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des fertigen Images brauchst du nur die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 ```bash
-git clone --depth 1 https://github.com/wydler/headergrade-docker-tst.git
-cd headergrade-docker-tst
+git clone --depth 1 https://github.com/wydler/headergrade-docker.git
+cd headergrade-docker
 cp .env.example .env
 mkdir -p data
 docker compose pull
@@ -70,8 +70,8 @@ Bei Release-Events wird der Release-Tag als Image-Tag verwendet; Pre-Releases er
 Die folgenden Schritte sind nur für Entwicklung und Image-Builds nötig, nicht für den Betrieb des fertigen Docker-Hub-Images. Klone dafür das Repository einschließlich Submodul:
 
 ```bash
-git clone --recurse-submodules https://github.com/wydler/headergrade-docker-tst.git
-cd headergrade-docker-tst
+git clone --recurse-submodules https://github.com/wydler/headergrade-docker.git
+cd headergrade-docker
 ```
 
 Das Submodul fixiert einen konkreten Upstream-Commit; ein Update ändert nicht automatisch ein bereits gebautes Image. In diesem Repository ist kein automatischer Upstream-Update- oder PR-Workflow eingerichtet. Aktualisiere das Submodul daher manuell, prüfe die Änderungen und erstelle anschließend einen Pull Request:

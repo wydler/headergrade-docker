@@ -6,7 +6,7 @@ FROM ${NODE_IMAGE}
 
 LABEL org.opencontainers.image.title="HeaderGrade Docker"
 LABEL org.opencontainers.image.description="Container image for the upstream HeaderGrade security-header scanner"
-LABEL org.opencontainers.image.source="https://github.com/OWNER/headergrade-docker"
+LABEL org.opencontainers.image.source="https://github.com/wydler/headergrade-docker"
 
 ENV NODE_ENV=production \
     PORT=3000

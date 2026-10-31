@@ -17,7 +17,7 @@ Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. 
 
 Das folgende Skript installiert Docker, containerd sowie Docker Buildx und Compose. Es unterstützt Debian und Ubuntu und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch:
 ```bash
-curl https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
+curl -fsSL https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
 ```
 
 Für IPv6-Firewallregeln von Docker kannst du die Konfigurationsdatei des Docker-Daemons unter `/etc/docker/daemon.json` bearbeiten. Füge die folgenden Parameter in eine vorhandene Konfiguration ein, statt sie zu überschreiben. Sie aktivieren IPv6 jedoch nicht automatisch für das Standard-Bridge-Netz; dafür ist eine zusätzliche, auf dein Netzwerk abgestimmte Konfiguration erforderlich. Starte den Docker-Daemon anschließend mit `sudo systemctl restart docker.service` neu:

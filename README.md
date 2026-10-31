@@ -15,7 +15,7 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 
 Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
-Das folgende Skript installiert Docker, containerd sowie Docker Buildx und Compose. Es unterstützt Debian und Ubuntu und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch:
+Das Installationsskript unterstützt Debian und Ubuntu, richtet Docker, containerd, Buildx und Compose ein und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch. Der folgende Befehl führt das von GitHub geladene Skript direkt aus, ohne vorherige Prüfung des Inhalts. Das Skript benötigt für die Installation `sudo`-Rechte:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
 ```
@@ -32,13 +32,13 @@ sudo mkdir -p data
 sudo chown -R 1000:1000 data
 ```
 
-Erstelle die `.env`-Datei und starte den Container:
+Kopiere die Beispielkonfiguration in `.env` und passe bei Bedarf die Werte an:
 ```bash
 sudo cp .env.example .env
-sudo chown "$(id -u):$(id -g)" .env
+sudo vi .env
 ```
 
-Anwendung starten:
+Image herunterladen, Container starten und Status sowie Logs prüfen:
 ```bash
 sudo docker compose pull
 sudo docker compose up -d

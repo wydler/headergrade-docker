@@ -22,6 +22,7 @@ git clone --depth 1 https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
 cp .env.example .env
 mkdir -p data
+chown -R 1000:1000 data
 docker compose pull
 docker compose up -d
 docker compose ps

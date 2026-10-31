@@ -16,10 +16,13 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des fertigen Images brauchst du nur die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 ```bash
+mkdir -p /opt/containers/
+cd /opt/containers/
 git clone --depth 1 https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
 cp .env.example .env
 mkdir -p data
+chown -R 1000:1000 data
 docker compose pull
 docker compose up -d
 docker compose ps
@@ -28,11 +31,7 @@ docker compose logs -f headergrade
 
 Das fertige Image ist öffentlich auf [Docker Hub](https://hub.docker.com/r/wydler/headergrade) verfügbar. Ein lokaler Build ist für den normalen Betrieb nicht erforderlich; Compose verwendet standardmäßig `wydler/headergrade:latest`.
 
-Der Prozess im Container läuft mit UID/GID `1000:1000`. Auf Linux muss das Datenverzeichnis für diesen Benutzer beschreibbar sein:
-
-```bash
-sudo chown -R 1000:1000 data
-```
+Der Prozess im Container läuft mit UID/GID `1000:1000`. Auf Linux muss das Datenverzeichnis für diesen Benutzer beschreibbar sein.
 
 Compose bindet die Weboberfläche standardmäßig nur an `127.0.0.1:3000`. Öffne lokal <http://127.0.0.1:3000>. Für den Zugriff aus einem vertrauenswürdigen LAN kann `BIND_ADDRESS` in `.env` auf die LAN-Adresse des Hosts gesetzt werden. `0.0.0.0` sollte nur mit passenden Firewall-Regeln und einer geeigneten Zugriffskontrolle verwendet werden.
 

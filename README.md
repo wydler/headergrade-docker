@@ -13,12 +13,12 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 
 ## Schnellstart
 
-Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
-
-Das Installationsskript unterstützt Debian und Ubuntu, richtet Docker, containerd, Buildx und Compose ein und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch. Der folgende Befehl führt das von GitHub geladene Skript direkt aus, ohne vorherige Prüfung des Inhalts. Das Skript benötigt für die Installation `sudo`-Rechte:
+Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. Das Skript richtet Docker, containerd, Buildx und Compose ein und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch. Der folgende Befehl lädt das Skript von GitHub und führt es direkt aus, ohne den Inhalt vorher zu prüfen. Verwende ihn daher nur, wenn du der Quelle vertraust:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
 ```
+
+Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 Klone das Repository in das Verzeichnis für Docker-Container:
 ```bash
@@ -79,7 +79,7 @@ Der folgende Abschnitt beschreibt den Release-Workflow für die Entwicklung und 
 
 Der Workflow [build.docker.images.yml](.github/workflows/build.docker.images.yml) baut und veröffentlicht bei einem Release (auch Pre-Release) oder manuellem Start in die konfigurierte Registry. Er benötigt die Repository-Variablen `REGISTRY`, `REGISTRY_ACCOUNT`, `REGISTRY_REPO`, `REGISTRY_REPO_TAG_CACHE_NAME` und `REGISTRY_PLATFORMS` sowie die Secrets `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `cosign_private_key` und `cosign_password`. Das Image wird mit Cosign signiert und anschließend gegen `cosign.pub` im Repository verifiziert. Der Schlüssel und die erforderlichen Secrets müssen eingerichtet sein, bevor der Publish-Workflow erfolgreich laufen kann; der Workflow [tools_cosign_generate-keys.yml](.github/workflows/tools_cosign_generate-keys.yml) kann beim Erzeugen des Schlüsselpaares helfen.
 
-Bei Release-Events wird der Release-Tag als Image-Tag verwendet; Pre-Releases erhalten kein `latest`, reguläre Releases setzen `latest` auf den Release-Stand. Der manuelle Workflow verwendet den Namen des ausgewählten Branches oder Tags als Image-Tag. Da der Promote-Schritt nicht ausdrücklich auf Release-Events beschränkt ist, kann auch ein manueller Lauf `latest` verändern. Der Workflow hängt außerdem SBOM- und Provenance-Metadaten an.
+Bei Release-Events wird der Release-Tag als Image-Tag verwendet. Pre-Releases erhalten kein `latest`; nur reguläre Releases aktualisieren `latest`. Ein manueller Lauf verwendet den Namen des ausgewählten Branches oder Tags als Image-Tag und ändert `latest` nicht. Der Workflow hängt außerdem SBOM- und Provenance-Metadaten an.
 
 ## Upstream aktualisieren
 
@@ -90,7 +90,7 @@ git clone --recurse-submodules https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
 ```
 
-Das Submodul fixiert einen konkreten Upstream-Commit; ein Update ändert nicht automatisch ein bereits gebautes Image. In diesem Repository ist kein automatischer Upstream-Update- oder PR-Workflow eingerichtet. Aktualisiere das Submodul daher manuell, prüfe die Änderungen und erstelle anschließend einen Pull Request:
+Das Submodul fixiert einen konkreten Upstream-Commit; ein Update ändert nicht automatisch ein bereits gebautes Image. Renovate prüft Git-Submodule wöchentlich und kann dafür einen Entwurfs-Pull-Request erstellen. Alternativ kannst du das Submodul manuell aktualisieren, die Änderungen prüfen und anschließend einen Pull Request erstellen:
 
 ```bash
 git -C upstream/headergrade fetch origin master

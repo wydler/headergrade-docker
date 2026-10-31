@@ -13,20 +13,44 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 
 ## Schnellstart
 
-Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des fertigen Images brauchst du nur die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
+Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
+Das folgende Skript installiert Docker, containerd sowie Docker Buildx und Compose. Es unterstützt Debian und Ubuntu und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch:
 ```bash
-mkdir -p /opt/containers/
+curl https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
+```
+
+Für IPv6-Firewallregeln von Docker kannst du die Konfigurationsdatei des Docker-Daemons unter `/etc/docker/daemon.json` bearbeiten. Füge die folgenden Parameter in eine vorhandene Konfiguration ein, statt sie zu überschreiben. Sie aktivieren IPv6 jedoch nicht automatisch für das Standard-Bridge-Netz; dafür ist eine zusätzliche, auf dein Netzwerk abgestimmte Konfiguration erforderlich. Starte den Docker-Daemon anschließend mit `sudo systemctl restart docker.service` neu:
+```bash
+{
+  "experimental": true,
+  "ip6tables": true
+}
+```
+
+Klone das Repository in das Verzeichnis für Docker-Container:
+```bash
+sudo mkdir -p /opt/containers/
+
 cd /opt/containers/
-git clone --depth 1 https://github.com/wydler/headergrade-docker.git
+sudo git clone --depth 1 https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
-cp .env.example .env
-mkdir -p data
-chown -R 1000:1000 data
-docker compose pull
-docker compose up -d
-docker compose ps
-docker compose logs -f headergrade
+sudo mkdir -p data
+sudo chown -R 1000:1000 data
+```
+
+Erstelle die `.env`-Datei und starte den Container:
+```bash
+sudo cp .env.example .env
+sudo chown "$(id -u):$(id -g)" .env
+```
+
+Anwendung starten:
+```bash
+sudo docker compose pull
+sudo docker compose up -d
+sudo docker compose ps
+sudo docker compose logs -f headergrade
 ```
 
 Das fertige Image ist öffentlich auf [Docker Hub](https://hub.docker.com/r/wydler/headergrade) verfügbar. Ein lokaler Build ist für den normalen Betrieb nicht erforderlich; Compose verwendet standardmäßig `wydler/headergrade:latest`.

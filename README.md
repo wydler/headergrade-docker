@@ -34,6 +34,7 @@ sudo mkdir -p /opt/containers/
 
 cd /opt/containers/
 sudo git clone --depth 1 https://github.com/wydler/headergrade-docker.git
+
 cd headergrade-docker
 sudo mkdir -p data
 sudo chown -R 1000:1000 data

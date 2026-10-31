@@ -17,6 +17,7 @@ Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des ferti
 
 ```bash
 mkdir -p /opt/containers/
+cd /opt/containers/
 git clone --depth 1 https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
 cp .env.example .env

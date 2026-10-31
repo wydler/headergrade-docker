@@ -16,6 +16,7 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des fertigen Images brauchst du nur die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 ```bash
+mkdir -p /opt/containers/
 git clone --depth 1 https://github.com/wydler/headergrade-docker.git
 cd headergrade-docker
 cp .env.example .env

@@ -8,7 +8,7 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 - Persistente Scan-Historie unter `./data`
 - Schreibgeschütztes Root-Dateisystem, verworfene Linux-Capabilities und `no-new-privileges`
 - Healthcheck über `GET /api/stats`
-- Optionale Umgebungsvariablen für `SEED_TOKEN` und OWASP ZAP
+- Optionale Umgebungsvariablen für `SEED_TOKEN` und `OWASP ZAP`
 - Docker-Smoke-Test bei passenden Pull Requests sowie manuell startbar
 
 ## Schnellstart

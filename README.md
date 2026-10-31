@@ -1,6 +1,6 @@
 # HeaderGrade Docker
 
-Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), einen selbst hostbaren Scanner für HTTP-Sicherheitsheader. Der Upstream liegt als Git-Submodul unter `upstream/headergrade`; das Docker-Image enthält nur die für den Laufzeitbetrieb benötigten Dateien.
+Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), einen selbst hostbaren Scanner für HTTP-Sicherheitsheader. Der Upstream liegt als Git-Submodul unter `upstream/headergrade`. Das Docker-Image enthält nur die für den Laufzeitbetrieb benötigten Dateien.
 
 ## Funktionen
 

@@ -148,8 +148,8 @@ jobs:
             --yes \
             --key env://COSIGN_PRIVATE_KEY ${{ env.REGISTRY }}/${{ steps.tags.outputs.docker }}@${{ steps.build.outputs.digest }}
         env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.cosign_private_key }}
-          COSIGN_PASSWORD: ${{ secrets.cosign_password }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
 
       - name: Verify image signature
         shell: bash

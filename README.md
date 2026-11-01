@@ -16,12 +16,11 @@ Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des ferti
 
 Klone das Repository in das Verzeichnis für Docker-Container:
 ```bash
-sudo mkdir -p /opt/containers/
-
-cd /opt/containers/
-sudo git clone --depth 1 https://github.com/wydler/headergrade-docker.git
+sudo git clone https://github.com/wydler/headergrade-docker.git /opt/containers/headergrade-docker
 
 cd headergrade-docker
+sudo git checkout $(git tag | tail -1)
+
 sudo mkdir -p data
 sudo chown -R 1000:1000 data
 ```

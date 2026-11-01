@@ -18,7 +18,7 @@ Klone das Repository in das Verzeichnis für Docker-Container:
 ```bash
 sudo git clone https://github.com/wydler/headergrade-docker.git /opt/containers/headergrade-docker
 
-cd headergrade-docker
+cd /opt/containers/headergrade-docker
 sudo git checkout $(git tag | tail -1)
 
 sudo mkdir -p data

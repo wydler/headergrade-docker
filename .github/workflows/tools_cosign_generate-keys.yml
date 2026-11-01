@@ -48,7 +48,7 @@ jobs:
 
 
   create-branch:
-    name: Create working branch
+    name: Prepare working branch
     runs-on: ubuntu-slim
 
     needs:
@@ -57,29 +57,12 @@ jobs:
     outputs:
       name: ${{ steps.branch.outputs.name }}
 
-    permissions:
-      contents: write
-
     steps:
-      - name: Generate app token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510  # v3.3.0
-        id: generate-token
-        with:
-          client-id: "${{ secrets.gh_app_cos_id }}"
-          private-key: "${{ secrets.gh_app_cos_private_key }}"
-
       - name: Create branch name
         id: branch
         run: |
            BRANCH="${{ env.branch-name }}/$(date +'%Y%m%d-%H%M')"
            echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
-
-      - name: Create branch
-        uses: peterjgrainger/action-create-branch@4b81ce657e255acd677cc6c55c9c763654be3aef  # v4.0.0
-        env:
-          GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
-        with:
-          branch: "${{ steps.branch.outputs.name }}"
 
 
   gen-keys:
@@ -101,10 +84,10 @@ jobs:
           client-id: "${{ secrets.gh_app_cos_id }}"
           private-key: "${{ secrets.gh_app_cos_private_key }}"
 
-      - name: "Checkout new created branch"
+      - name: "Checkout default branch"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
-          ref: "${{ needs.create-branch.outputs.name }}"
+          ref: "${{ github.event.repository.default_branch }}"
           fetch-depth: '0'
 
       - name: "Install Cosign"
@@ -112,10 +95,16 @@ jobs:
 
       - name: Preserve existing public key
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           if [[ -f cosign.pub ]]; then
             backup="cosign-$(date -u +%Y%m%dT%H%M%SZ).pub"
             cp cosign.pub "$backup"
             echo "Preserved existing public key as $backup."
+
+            git add "$backup"
+            git commit -m "[Cosign] Preserve previous public key"
           else
             echo "::notice::No existing cosign.pub found; skipping backup."
           fi
@@ -136,31 +125,37 @@ jobs:
           export COSIGN_PASSWORD
           cosign generate-key-pair github://${{ github.repository }}
 
+      - name: Commit new public key
+        run: |
+          set -euo pipefail
+
+          git add cosign.pub
+          git commit -m "[Cosign] Add new public key"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "::error::Unexpected uncommitted changes remain after creating the key commits."
+            git status --short
+            exit 1
+          fi
+
+      - name: Create signed pull request
+        id: pullrequest
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
+        with:
+          token: "${{ steps.generate-token.outputs.token }}"
+          branch: "${{ needs.create-branch.outputs.name }}"
+          base: "${{ github.event.repository.default_branch }}"
+          sign-commits: true
+          title: "[Cosign] Add public key to repository"
+          body: "A new key pair for Cosign has been created. This pull request will add the public key to the repository."
+          labels: "Cosign, dependencies"
+          assignees: "dwydler"
+
       - name: "Set the variable 'COSIGN_OVERWRITE' to '0'."
         run: |
           gh variable set COSIGN_OVERWRITE --body "0"
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-
-      - name: "Commit & Push changes"
-        uses: actions-js/push@968f4695ca558093eadb24ad83cc5891f47e0cdc  # v1.6
-        with:
-          branch: "${{ needs.create-branch.outputs.name }}"
-          github_token: "${{ steps.generate-token.outputs.token }}"
-          force: true
-
-      - name: "Create a pull request"
-        id: pullrequest
-        uses: devops-infra/action-pull-request@1d8aa3c4a6060a1410641f700f91353af65cc94b  # v1.4.0
-        with:
-          github_token: "${{ steps.generate-token.outputs.token }}"
-          source_branch: "${{ needs.create-branch.outputs.name }}"
-          target_branch: "${{ github.event.repository.default_branch }}"
-          title: "[Cosign] Add public key to repository"
-          body: "A new key pair for Cosign has been created. This pull request will add the public key to the repository."
-          label: "Cosign, dependencies"
-          create_missing_labels: "true"
-          assignee: "dwydler"
 
 
   cleanup-on-failure:

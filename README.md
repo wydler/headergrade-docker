@@ -12,25 +12,25 @@ Docker-Wrapper für [HeaderGrade](https://github.com/cybercrewinc/headergrade), 
 - Docker-Smoke-Test bei passenden Pull Requests sowie manuell startbar
 
 ## Schnellstart
-
-Für die Installation benötigst du `curl` sowie Debian oder Ubuntu mit `sudo`. Das Skript richtet Docker, containerd, Buildx und Compose ein und aktualisiert die Paketlisten, führt aber kein vollständiges Paket-Upgrade durch. Der folgende Befehl lädt das Skript von GitHub und führt es direkt aus, ohne den Inhalt vorher zu prüfen. Verwende ihn daher nur, wenn du der Quelle vertraust:
-```bash
-curl -fsSL https://raw.githubusercontent.com/wydler/headergrade-docker/refs/heads/master/misc/docker-shared/01-docker-installation.sh | bash
-```
-
-Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
+Voraussetzungen: Docker Engine und Docker Compose v2. Für den Betrieb des fertigen Images brauchst du nur die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 Klone das Repository in das Verzeichnis für Docker-Container:
 ```bash
-sudo mkdir -p /opt/containers/
+sudo git clone https://github.com/wydler/headergrade-docker.git /opt/containers/headergrade-docker
 
-cd /opt/containers/
-sudo git clone --depth 1 https://github.com/wydler/headergrade-docker.git
+cd /opt/containers/headergrade-docker
+sudo git checkout $(git tag | tail -1)
 
-cd headergrade-docker
 sudo mkdir -p data
 sudo chown -R 1000:1000 data
 ```
+
+Wenn auf dem Host Docker noch nicht installiert ist, kannst du das mitgelieferte Setup-Skript aus dem Repositoryverzeichnis ausführen. Es richtet Docker, containerd, Buildx und Compose ein und aktualisiert die Paketlisten, ohne ein vollständiges Paket-Upgrade durchzuführen:
+```bash
+bash ./misc/docker-shared/01-docker-installation.sh
+```
+
+Für den anschließenden Betrieb des fertigen Images genügt die Compose-Konfiguration aus diesem Repository; das Upstream-Submodul ist dafür nicht erforderlich.
 
 Kopiere die Beispielkonfiguration in `.env` und passe bei Bedarf die Werte an:
 ```bash

@@ -31,8 +31,13 @@ jobs:
       contents: read
 
     steps:
-      - name: Check required variables
+      - name: Check required configuration
         shell: bash
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.cosign_private_key }}
+          COSIGN_PASSWORD: ${{ secrets.cosign_password }}
         run: |
           missing=0
 
@@ -41,13 +46,17 @@ jobs:
             REGISTRY_ACCOUNT \
             REGISTRY_REPO \
             REGISTRY_REPO_TAG_CACHE_NAME \
-            REGISTRY_PLATFORMS
+            REGISTRY_PLATFORMS \
+            DOCKERHUB_USERNAME \
+            DOCKERHUB_TOKEN \
+            COSIGN_PRIVATE_KEY \
+            COSIGN_PASSWORD
           do
             if [[ -z "${!var}" ]]; then
-              echo "::error::Repository variable '$var' is missing."
+              echo "::error::Required setting '$var' is missing."
               missing=1
             else
-              echo "::notice::$var is configured."
+              echo "::notice::Required setting '$var' is configured."
             fi
           done
 

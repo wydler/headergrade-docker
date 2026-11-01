@@ -112,9 +112,18 @@ jobs:
 
       - name: "Generate Key Pair and Password for Cosign"
         env:
-          COSIGN_PASSWORD: "${{ secrets.COSIGN_PASSWORD }}"
           GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
         run: |
+          set -euo pipefail
+
+          COSIGN_PASSWORD="$(openssl rand -base64 32)"
+          if [[ -z "$COSIGN_PASSWORD" ]]; then
+            echo "::error::Failed to generate a Cosign password."
+            exit 1
+          fi
+
+          echo "::add-mask::$COSIGN_PASSWORD"
+          export COSIGN_PASSWORD
           cosign generate-key-pair github://${{ github.repository }}
 
       - name: "Set the variable 'COSIGN_OVERWRITE' to '0'."

@@ -199,5 +199,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}
-          readme-filepath: ./DOCKERHUB.md
+          readme-filepath: ./docs/DOCKERHUB.md
           short-description: "HeaderGrade is a self-hosted web application for scanning HTTP security headers."

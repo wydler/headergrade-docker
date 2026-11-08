@@ -192,3 +192,12 @@ jobs:
           docker buildx imagetools create \
             -t "${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}:latest" \
             ${{ steps.tags.outputs.docker }}
+
+      - name: Update Docker Repository Description
+        uses: peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa  # v5.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}
+          readme-filepath: ./DOCKERHUB.md
+          short-description: "HeaderGrade is a self-hosted web application for scanning HTTP security headers. This image packages HeaderGrade for easy deployment with Docker."

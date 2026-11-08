@@ -200,4 +200,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.REGISTRY_ACCOUNT }}/${{ env.REGISTRY_REPO }}
           readme-filepath: ./DOCKERHUB.md
-          short-description: "HeaderGrade is a self-hosted web application for scanning HTTP security headers. This image packages HeaderGrade for easy deployment with Docker."
+          short-description: "HeaderGrade is a self-hosted web application for scanning HTTP security headers."
